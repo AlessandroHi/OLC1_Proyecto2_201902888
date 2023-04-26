@@ -87,10 +87,14 @@
 
 <<EOF>>                 return 'EOF';
 
-.                       { console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);}
+.                       {  Lexico = new Error("Lexico","No se reconocio el caracter: "+yytext, yylloc.first_line,yylloc.first_column+1); ListaErrores.push(Lexico);}
 /lex
 
 %{
+  //import list errores
+  const { ListaErrores} = require ("./Reports/Error.ts");
+  const { Error} = require ("./Reports/Error.ts");
+
   // importar tipos
   const {Type} = require('./abstract/Return');
   const {TipoAritmetica} = require('./utils/TipoAritmetica');
@@ -99,7 +103,6 @@
   const {Declarar} = require('./instruction/Declarar');
   const {Acceso} = require('./expression/Acceso');
   const {Aritmetica} = require('./expression/Aritmetica');
-
 %}
 
 
@@ -130,8 +133,8 @@ INSTRUCCION
 	: DEFPRINT          { $$ = $1; }
   | DECLARAR          { $$ = $1; }
   | CASTEO            { $$ = $1; }
-	| error PTCOMA
-  {   console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + this._$.first_line + ', en la columna: ' + this._$.first_column);}
+	| error PTCOMA      {  console.error("En la linea "+ this._$.first_column)
+    Sintactico = new Error("Sintactico","No se esperaba el caracter ", this._$.first_line,+ this._$.first_column); ListaErrores.push(Sintactico);}
 ;
 
 // GRAMATICA IMPRIMIR 
@@ -151,17 +154,16 @@ EXPRESION
   : PRIMITIVO       { $$ = $1; }
   | ACCEDERVAR      { $$ = $1; }
   | ARITMETICA      { $$ = $1; }
-  | CASTEO
 ;
 
-//GRAMATICA CASTEO
-CASTEO
-     : PARIZQ TIPO PARDER EXPRESION
-;
 
 // OPERACION ARITMETICA
 ARITMETICA
-  : EXPRESION MAS EXPRESION     { $$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,@1.first_line, @1.first_column); }
+  : EXPRESION POR EXPRESION     { $$ = new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION,@1.first_line, @1.first_column); }
+  | EXPRESION DIVISION EXPRESION { $$ = new Aritmetica($1,$3,TipoAritmetica.DIVISION,@1.first_line, @1.first_column); }
+  | EXPRESION POTENCIA EXPRESION     { $$ = new Aritmetica($1,$3,TipoAritmetica.POTENCIA,@1.first_line, @1.first_column); }
+   | EXPRESION MODULO EXPRESION     { $$ = new Aritmetica($1,$3,TipoAritmetica.MODULO,@1.first_line, @1.first_column); }
+  | EXPRESION MAS EXPRESION     { $$ = new Aritmetica($1,$3,TipoAritmetica.SUMA,@1.first_line, @1.first_column); }
   | EXPRESION MENOS EXPRESION   { $$ = new Aritmetica($1,$3,TipoAritmetica.RESTA,@1.first_line, @1.first_column); }
   | MENOS EXPRESION %prec UMENOS { $$ = new Aritmetica($2,$2,TipoAritmetica.UMENOS,@1.first_line, @1.first_column); }  
 ;

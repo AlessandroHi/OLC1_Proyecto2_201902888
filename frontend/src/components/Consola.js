@@ -9,6 +9,12 @@ function Consola(props) {
     <CodeMirror
     value={props.consola}
     height="500px"
+    minHeight="500px"
+    maxHeight="500px"
+    width="600px"
+    minWidth="100px"
+    maxWidth="600px"
+    editable= {false}
     theme={okaidia}
   />
   );

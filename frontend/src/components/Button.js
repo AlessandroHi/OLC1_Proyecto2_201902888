@@ -6,7 +6,7 @@ function simulateNetworkRequest() {
   return new Promise((resolve) => setTimeout(resolve, 800));
 }
 
-function LoadingButton() {
+function LoadingButton(props) {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,12 @@ function LoadingButton() {
       variant="success"
       size="lg"
       disabled={isLoading}
-      onClick={!isLoading ? handleClick : null}
+      onClick={()=>{
+        const fun1 = !isLoading ? handleClick : null;
+        const fun2 = props.interpretar;
+        fun1()
+        fun2()
+      }}
     >
       {isLoading ? 'Loading…' : 'Run'} <BsFillCaretRightFill/>
     </Button>
