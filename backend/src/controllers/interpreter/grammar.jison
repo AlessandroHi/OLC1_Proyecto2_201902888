@@ -103,6 +103,10 @@
   const {Declarar} = require('./instruction/Declarar');
   const {Acceso} = require('./expression/Acceso');
   const {Aritmetica} = require('./expression/Aritmetica');
+  const {Statement} = require('./instruction/Statement');
+  const {Funcion} = require('./instruction/Funcion');
+  const {Parametros} = require('./expression/Parametros');
+  const {LlamadaFuncion} = require('./expression/LlamadaFuncion');
 %}
 
 
@@ -133,6 +137,8 @@ INSTRUCCION
 	: DEFPRINT          { $$ = $1; }
   | DECLARAR          { $$ = $1; }
   | CASTEO            { $$ = $1; }
+  | LLAMADAFUNCION PTCOMA    { $$ = $1; } 
+  | GUARDARFUNCION         { $$ = $1; }
 	| error PTCOMA      {  console.error("En la linea "+ this._$.first_column)
     Sintactico = new Error("Sintactico","No se esperaba el caracter ", this._$.first_line,+ this._$.first_column); ListaErrores.push(Sintactico);}
 ;
@@ -147,6 +153,40 @@ DEFPRINT
 DECLARAR
     : TIPO ID PTCOMA  { $$ = new Declarar($2,$1,null,@1.first_line, @1.first_column ); }
     | TIPO ID IGUAL EXPRESION PTCOMA  { $$ = new Declarar($2,$1,$4,@1.first_line, @1.first_column ); }
+;
+
+//GRAMATICA FUNCION
+GUARDARFUNCION
+  : TIPO ID PARIZQ PARDER STATEMENT  { $$ = new Funcion($1,$2,[],$5,@1.first_line, @1.first_column ); }
+  | TIPO ID PARIZQ PARAMETROS PARDER STATEMENT  { $$ = new Funcion($1,$2,$4,$6,@1.first_line, @1.first_column ); }
+;
+
+// GRAMATICA LLAMADA DE FUNCION
+LLAMADAFUNCION
+  : ID PARIZQ PARDER { $$ = new LlamadaFuncion($1,[],@1.first_line, @1.first_column); }
+  | ID PARIZQ ARGUMENTOS PARDER { $$ = new LlamadaFuncion($1,$3,@1.first_line, @1.first_column); }
+;
+
+//PARAMETROS
+PARAMETROS
+  : PARAMETROS COMA PARAMETRO   { $1.push($3); $$ = $1; }
+  | PARAMETRO                   { $$ = [$1]; }
+;
+
+PARAMETRO
+  : TIPO ID  {$$ = new Parametros($1,$2,@1.first_line, @1.first_column);}
+;
+
+// GRAMATICA PARA FUNCIONES
+ARGUMENTOS
+  : ARGUMENTOS COMA EXPRESION { $1.push($3); $$ = $1;}
+  | EXPRESION { $$ = [$1];}
+;
+
+
+// STATEMENT ENTORNO ENTRE LLAVES
+STATEMENT
+  : LLAVEIZQ INSTRUCCIONES LLAVEDER   { $$ = new Statement($2,@1.first_line, @1.first_column); }
 ;
 
 
