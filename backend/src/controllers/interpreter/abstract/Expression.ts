@@ -1,14 +1,14 @@
-import {Return} from './Return';
-import { Environment } from "./Environment";
+
+import { Return } from "./Return"
+import { Environment } from "./Environment"
 
 export abstract class Expression {
-    public line: number;
-    public column: number;
-    constructor(line: number, column: number) {
+
+    constructor(public line: number, public column: number) {
         this.line = line
-        this.column = column
+        this.column = column + 1
     }
 
-    public abstract execute(env:Environment): Return;
-
+    public abstract execute(environment: Environment): Return
+   
 }

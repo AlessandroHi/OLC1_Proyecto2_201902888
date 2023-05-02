@@ -2,11 +2,13 @@ import { Simbolo } from "./Symbol";
 import { Type } from "./Return";
 import { printlist } from "../Reports/PrintList";
 import { Funcion } from "../instruction/Funcion";
+import {Metodo} from "../instruction/Metodo"
 import { ListaTabla, TablaSimbolos } from "../Reports/TablaSimbolos";
 
 export class Environment {
   private variables = new Map<string, Simbolo>(); //  mapa de variables
   private funciones = new Map<string, Funcion>(); //  mapa de variables
+  private metodos = new Map<string, Metodo>(); //  mapa de variables
 
   // constructor
   constructor(private anterior: Environment | null) {
@@ -58,6 +60,7 @@ export class Environment {
     return null;
   }
 
+  
   // guardar una nueva funcion
   public guardarFuncion(id: string, funcion: Funcion) {
     // verificar el ambito
@@ -93,6 +96,40 @@ export class Environment {
     return null;
   }
 
+  // guardar una nuevo metodo
+  public guardarMetodo(id: string, metodo: Metodo) {
+    // verificar el ambito
+    let env: Environment | null = this;
+
+    // verificar si la metodo ya existe
+    if (!env.metodos.has(id.toLowerCase())) {
+      // guardar la variable
+      // guardar la variable en una tabla de simbolos para el reporte
+      env.metodos.set(id.toLowerCase(), metodo);
+    } else {
+      printlist.push("Error, El metodo " + id + " ya existe en el entorno");
+    }
+  }
+
+  public getMetodo(id: string): Metodo | null {
+    // verificar el ambito
+    let env: Environment | null = this;
+
+    // buscar la variable
+    while (env != null) {
+      // verificar si la variable existe
+      if (env.metodos.has(id.toLowerCase())) {
+        // retornar la variable
+        return env.metodos.get(id.toLowerCase())!;
+      }
+      // cambiar de ambito
+      env = env.anterior;
+    }
+
+    // retornar null si no se encontro la variable
+    return null;
+  }
+
   // obtener el entorno global
   public getGlobal(): Environment {
     // verificar el ambito
@@ -106,4 +143,22 @@ export class Environment {
     // retornar el entorno global
     return env;
   }
+
+   // modificar una variable
+   public modificar(id: string, valor: any) {
+    // verificar el ambito
+    let env: Environment | null = this;
+    while (env != null) {
+      // verificar si la variable existe
+      if (env.variables.has(id.toLowerCase())) {
+        // modificar la variable
+        env.variables.get(id.toLowerCase())!.valor = valor;
+        return;
+      }
+      // cambiar de ambito
+      env = env.anterior;
+    }
+  }
+
+
 }

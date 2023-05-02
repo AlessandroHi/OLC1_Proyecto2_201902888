@@ -38,14 +38,14 @@ class InterpreteController {
 
         res.json({ consola: printlist.join("\n"), errores: ListaErrores });
       } catch (error) {
-        console.log(error);
+        
         res.json({
           consola: "Errors check reports... ",
           errores: ListaErrores,
         });
       }
     } catch (err) {
-      console.log(err);
+      
       res.json({
         consola: "Errors check reports... ",
         errores: ListaErrores,
