@@ -164,6 +164,7 @@
 %left 'POR' 'DIVISION' 'MODULO'
 %nonassoc 'POTENCIA'
 %right 'UMENOS '
+%right 'PARIZQ' 'PARDER'
 %right 'INCRE' 'DECRE'
 
 %start INICIO
@@ -274,7 +275,7 @@ INCREDECRE
 
 //RETORNO DE EXPRESIONES
 EXPRESION
-  : PARIZQ EXPRESION PARDER  { $$ = $1; }
+  : PARIZQ EXPRESION PARDER  { $$ = $2; }
   | PRIMITIVO       { $$ = $1; }
   | ACCEDERVAR      { $$ = $1; }
   | ARITMETICA      { $$ = $1; }

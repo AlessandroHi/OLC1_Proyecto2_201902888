@@ -17,7 +17,6 @@ function Home() {
   const [codigo, setCodigo] = useState(""); //mostrar editor
   const [consola, setConsola] = useState(""); // mostrar consola
   const [dataErrores, setErrores] = useState(""); // mostrar errores
-
   const [dataAST, setAST] = useState(""); // RECIBIR  AST
   
   //------ CARGA DE ARCHIVO
@@ -52,10 +51,10 @@ function Home() {
         );
         //console.log(response.data);  VER QUE DATOS SE ENVIAN
       
-        const { consola, errores,AST } = response.data; //RECOLETA PRINT, ERRORES
+        const { consola, errores, AST } = response.data; //RECOLETA PRINT, ERRORES, AST , TABLA SIMBOLOS
         setErrores(errores) //se guardan errores
         setConsola(consola); // se muestra los prints
-        setAST(AST)
+        setAST(AST)  //SE GUARDAR EL GRAFO AST
       }
     } catch (error) {
       console.log(error);

@@ -95,7 +95,7 @@ break;
 case 4: case 6: case 7: case 9: case 10: case 11: case 12: case 32: case 33: case 38: case 39: case 40: case 41: case 42: case 43: case 44: case 45: case 46: case 47: case 48: case 49: case 50:
  this.$ = $$[$0]; 
 break;
-case 5: case 8: case 13:
+case 5: case 8: case 13: case 37:
  this.$ = $$[$0-1]; 
 break;
 case 14:
@@ -158,9 +158,6 @@ case 35:
 break;
 case 36:
  this.$= new Decre($$[$0-2],_$[$0-1].first_line,_$[$0-1].first_column); 
-break;
-case 37:
- this.$ = $$[$0-2]; 
 break;
 case 51:
  this.$ = new LlamadaFuncion($$[$0-2],[],_$[$0-2].first_line, _$[$0-2].first_column); 
