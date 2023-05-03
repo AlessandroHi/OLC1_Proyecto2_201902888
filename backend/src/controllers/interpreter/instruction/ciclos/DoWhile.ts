@@ -1,7 +1,7 @@
-import { Instruction } from "../abstract/Instruction";
-import { Expression } from "../abstract/Expression";
-import { Environment } from "../abstract/Environment";
-import { Type } from "../abstract/Return";
+import { Instruction } from "../../abstract/Instruction";
+import { Expression } from "../../abstract/Expression";
+import { Environment } from "../../abstract/Environment";
+import { Type } from "../../abstract/Return";
 
 export class DoWhile extends Instruction {
 

@@ -29,11 +29,22 @@
 "for"               return 'RFOR';
 "if"                return 'RIF';
 "else"              return 'RELSE';
+"switch"            return 'RSWITCH'
+"case"              return 'RCASE'
+"default"           return 'RDEFAULT'
+"break"             return 'RBREAK'
 "do"                return 'RDO';
 "while"             return 'RWHILE';
 "void"              return 'RVOID';
 "toLower"           return 'RTOLOWER';
 "toUpper"           return 'RTOUPPER';
+"length"            return 'RLENGTH';
+"truncate"          return 'RTRUNCATE';
+"round"             return 'RROUND';
+"typeof"            return 'RTYPEOF';
+"toString"          return 'RTOSTRING';
+"main"              return 'RMAIN';
+
 
 //Relacionales
 "=="                 return 'IGUALQ';
@@ -114,9 +125,15 @@
   
 
   //importar instrucciones y funciones
+  const {Main} = require('./expression/main/Main')
   const {Print} = require('./instruction/Print');
-  const {ToLower} = require('./expression/ToLower')
-  const {ToUpper} = require('./expression/ToUpper')
+  const {ToLower} = require('./expression/funciones nativas/ToLower')
+  const {ToUpper} = require('./expression/funciones nativas/ToUpper')
+  const {Length} = require('./expression/funciones nativas/Length')
+  const {Truncate} = require('./expression/funciones nativas/Truncate')
+  const {Typeof} = require('./expression/funciones nativas/Typeof')
+  const {Round} = require('./expression/funciones nativas/Round')
+  const {ToString} = require('./expression/funciones nativas/ToString')
   const {Declarar} = require('./instruction/Declarar');
   const {Acceso} = require('./expression/Acceso');
   const {Aritmetica} = require('./expression/Aritmetica');
@@ -129,10 +146,11 @@
   const {OperacionesUnarios} = require('./expression/OperacionesUnarios');
   const {Incre} = require('./instruction/Incre')
   const {Decre} = require('./instruction/Decre.ts')
-  const {For} = require('./instruction/For');
-  const {If} = require('./instruction/If');
-  const {DoWhile} = require('./instruction/DoWhile')
-  const {While} = require('./instruction/While');
+  const {For} = require('./instruction/ciclos/For');
+  const {DoWhile} = require('./instruction/ciclos/DoWhile')
+  const {While} = require('./instruction/ciclos/While');
+  const {If} = require('./instruction/control/If');
+  
 %}
 
 
@@ -171,8 +189,15 @@ INSTRUCCION
   | CONTROLIF                { $$ = $1; }
   | DOWHILE                  { $$ = $1; }
   | WHILE                    { $$ = $1; }
+  | MAIN PTCOMA              { $$ = $1; }
 	| error PTCOMA      {  console.error("En la linea "+ this._$.first_column)
     Sintactico = new Error("Sintactico","No se esperaba el caracter ", this._$.first_line,+ this._$.first_column); ListaErrores.push(Sintactico);}
+;
+
+//GRAMATICA MAIN
+MAIN
+   : RMAIN ID PARIZQ PARDER   { $$ = new Main($2,[],@1.first_line, @1.first_column); }
+   | RMAIN ID PARIZQ ARGUMENTOS PARDER { $$ = new Main($2,$4,@1.first_line, @1.first_column); }
 ;
 
 // GRAMATICA IMPRIMIR 
@@ -237,6 +262,10 @@ CONTROLELSE
 ;
 //----------------------------
 
+
+
+//----------------------------
+
 // INCREMENTO Y DECREMENTO COMO INSTRUCCION
 INCREDECRE
     : ID INCRE PTCOMA { $$= new Incre($1,@2.first_line,@2.first_column); }
@@ -253,6 +282,11 @@ EXPRESION
   | OPERACIONESUNARIOS { $$ = $1; }
   | TOLOWER { $$ = $1; }
   | TOUPPER { $$ = $1; }
+  | LENGTH   { $$ = $1; }
+  | TRUNCATE { $$ = $1; }
+  | ROUND    { $$ = $1; }
+  | TYPEOF   { $$ = $1; }
+  | TOSTRING { $$ = $1; }
 ;
 
 // llamada a funciones
@@ -275,6 +309,31 @@ TOLOWER
 //GRAMATICA PARA TOUPPER
 TOUPPER
       : RTOUPPER PARIZQ EXPRESION PARDER {$$ = new ToUpper($3,@1.first_line, @1.first_column);}
+;
+
+//GRAMATICA PARA LENGTH
+LENGTH
+      : RLENGTH PARIZQ EXPRESION PARDER {$$ = new Length($3,@1.first_line, @1.first_column);}
+;
+
+//GRAMATICA PARA TRUNCATE
+TRUNCATE
+      : RTRUNCATE PARIZQ EXPRESION PARDER {$$ = new Truncate($3,@1.first_line, @1.first_column);}
+;
+
+//GRAMATICA PARA ROUND
+ROUND
+      : RROUND PARIZQ EXPRESION PARDER {$$ = new Round($3,@1.first_line, @1.first_column);}
+;
+
+//GRAMATICA PARA TYPEOF
+TYPEOF
+      : RTYPEOF PARIZQ EXPRESION PARDER {$$ = new Typeof($3,@1.first_line, @1.first_column);}
+;
+
+//GRAMATICA PARA TOSTRING 
+TOSTRING
+      : RTOSTRING PARIZQ EXPRESION PARDER {$$ = new ToString($3,@1.first_line, @1.first_column);}
 ;
 
 // OPERACION ARITMETICA

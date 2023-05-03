@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { printlist } from "./interpreter/Reports/PrintList";
 import { ListaErrores, Error } from "./interpreter/Reports/Error";
 import { Environment } from "./interpreter/abstract/Environment";
+import { Main } from "./interpreter/expression/main/Main";
+import {LlamadaFuncion} from "./interpreter/expression/LLamadaFuncion"
 // creando una clase controlador para manejar informacion y mandarlo al frontend
 
 class InterpreteController {
@@ -33,8 +35,9 @@ class InterpreteController {
         const globalEnv = new Environment(null);
 
         for (const inst of ast) {
-          inst.execute(globalEnv);
+              inst.execute(globalEnv);  
         }
+
 
         res.json({ consola: printlist.join("\n"), errores: ListaErrores });
       } catch (error) {

@@ -1,6 +1,7 @@
-import { Expression } from "../abstract/Expression";
-import { Return, Type } from "../abstract/Return";
-import { Environment } from "../abstract/Environment";
+import { Expression } from "../../abstract/Expression";
+import { Return, Type } from "../../abstract/Return";
+import { Environment } from "../../abstract/Environment";
+
 
 export class ToLower extends Expression {
     constructor(

@@ -2,11 +2,11 @@ import { Expression } from "../abstract/Expression";
 import { Environment } from "../abstract/Environment";
 
 
+
 export class LlamadaFuncion extends Expression {
     constructor(private id:string, private argumentos:Array<Expression>, line:number, column:number){
         super(line, column);
     }
-
     public execute(env: Environment):any {
         // ejecutar la funcion
         const funcion = env.getFuncion(this.id);
@@ -36,7 +36,7 @@ export class LlamadaFuncion extends Expression {
             }
       
           } else {
-            console.log("Error, La funcion " + this.id + " no existe, linea " + this.line + " y columna " + this.column);
+            console.log("Error, La funcion " + this.id + " no existe, linea " + this.line + " y columna " + this.column);  
           }
     }
 }

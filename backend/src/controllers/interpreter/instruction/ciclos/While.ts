@@ -1,6 +1,6 @@
-import { Instruction } from "../abstract/Instruction";
-import { Expression } from "../abstract/Expression";
-import { Environment } from "../abstract/Environment";
+import { Instruction } from "../../abstract/Instruction";
+import { Expression } from "../../abstract/Expression";
+import { Environment } from "../../abstract/Environment";
 
 
 export class While extends Instruction {
