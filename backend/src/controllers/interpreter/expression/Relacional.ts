@@ -4,6 +4,9 @@ import { Environment } from "../abstract/Environment";
 import { TipoRelacional } from "../utils/TipoRelacional";
 
 export class Relacional extends Expression {
+  public dato1: any;
+  public dato2: any;
+
   constructor(
     private izquierdo: Expression,
     private derecho: Expression,
@@ -15,9 +18,13 @@ export class Relacional extends Expression {
   }
 
   public execute(env: Environment): Return {
+    // PARA AST
+    this.dato1 = this.izquierdo.execute(env);
+    this.dato2 = this.derecho.execute(env);
+
     // obtener los valores de los operandos
-    const op1 = this.izquierdo.execute(env);
-    const op2 = this.derecho.execute(env);
+    let op1 = this.izquierdo.execute(env);
+    let op2 = this.derecho.execute(env);
 
     switch (this.tipoOperacion) {
       case TipoRelacional.IGUALQ:
@@ -34,11 +41,52 @@ export class Relacional extends Expression {
 
       case TipoRelacional.MAYORIGUALQUE:
         return { value: op1.value >= op2.value, type: Type.BOOLEAN };
-        
+
       case TipoRelacional.MENORIGUALQUE:
         return { value: op1.value <= op2.value, type: Type.BOOLEAN };
       default:
         return { value: null, type: Type.NULL };
     }
+  }
+
+  public drawAst(): { rama: string; nodo: string } {
+    // generar un id unico
+    const id = Math.floor(Math.random() * (100 - 0) + 0);
+    const nodoPrincipal = `nodoRelacional${id.toString()}`;
+    let ramaRelacional = "";
+    switch (this.tipoOperacion) {
+      case TipoRelacional.IGUALQ:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+        nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} == ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+        break
+      case TipoRelacional.DIFERENTEQ:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+        nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} != ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+        break
+      case TipoRelacional.MAYORQUE:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+        nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} > ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+        break
+      case TipoRelacional.MENORQUE:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+         nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} < ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+        break
+      case TipoRelacional.MAYORIGUALQUE:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+         nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} >= ${this.dato2.value}"];\n
+          ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+          break
+      case TipoRelacional.MENORIGUALQUE:
+        ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n
+         nodoPrimitivo${nodoPrincipal}[label="${this.dato1.value} <= ${this.dato2.value}"];\n
+         ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+         break
+    }
+
+    return { rama: ramaRelacional, nodo: nodoPrincipal };
   }
 }

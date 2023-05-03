@@ -24,5 +24,9 @@ export class DoWhile extends Instruction {
         } while (condition.value);
 
     }
+
+    public drawAst(): { rama: string; nodo: string; } {
+        return {rama:"", nodo: ""};
+    }
    
 }

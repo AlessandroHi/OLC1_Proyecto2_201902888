@@ -18,6 +18,19 @@ export class Acceso extends Expression {
             return {value: null, type: Type.NULL}
         }
     }
+   
+    
+    public drawAst(): { rama: string; nodo: string } {
+        // generar un id unico
+      const id = Math.floor(Math.random() * (100-0)+0);
+      // generar el nodo
+      const nodoPrincipal  = `nodoAcceso${id.toString()}`;
+      const ramaacceso = `${nodoPrincipal}[label="Acceso"];\n
+      nodoAcceso${nodoPrincipal}[label="${this.id}"];\n
+      ${nodoPrincipal} -> nodoAcceso${nodoPrincipal};\n`;
+      
+      return { rama:ramaacceso, nodo:nodoPrincipal };
+      }
 }
 
 

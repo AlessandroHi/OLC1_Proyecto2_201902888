@@ -20,4 +20,16 @@ export class ToLower extends Expression {
 
     }
 
+    public drawAst(): { rama: string; nodo: string } {
+      // generar un id
+    const id = Math.floor(Math.random() * (100-0)+0);
+    // generar el nombre del nodo
+    const nodoPrincipal = `nodoPrint${id.toString()}`;
+    let ramaPrint = `${nodoPrincipal}[label="ToLower"];\n`
+    const codigoRama:{rama:string, nodo:string} = this.dato.drawAst();
+    ramaPrint += codigoRama.rama;
+    ramaPrint += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+    return {rama:ramaPrint, nodo:nodoPrincipal};
+  }
+
 }

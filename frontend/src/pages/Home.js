@@ -18,6 +18,8 @@ function Home() {
   const [consola, setConsola] = useState(""); // mostrar consola
   const [dataErrores, setErrores] = useState(""); // mostrar errores
 
+  const [dataAST, setAST] = useState(""); // RECIBIR  AST
+  
   //------ CARGA DE ARCHIVO
   const cargarArchivo = (event) => {
     const cadenita = event.target.files[0];
@@ -49,11 +51,11 @@ function Home() {
           { code: codigo }
         );
         //console.log(response.data);  VER QUE DATOS SE ENVIAN
-
-        const { consola, errores } = response.data; //RECOLETA PRINT, ERRORES
+      
+        const { consola, errores,AST } = response.data; //RECOLETA PRINT, ERRORES
         setErrores(errores) //se guardan errores
         setConsola(consola); // se muestra los prints
-        console.log(dataErrores.length)
+        setAST(AST)
       }
     } catch (error) {
       console.log(error);
@@ -116,7 +118,7 @@ function Home() {
             <Dropdown.Item eventKey="2" onClick={() => setModalShow1(true)}>
               AST Tree
             </Dropdown.Item>
-            <ModalTree show={modalShow1} onHide={() => setModalShow1(false)} />
+            <ModalTree show={modalShow1}   dataAST={dataAST} onHide={() => setModalShow1(false)} />
 
             <Dropdown.Item eventKey="3" onClick={() => setModalShow2(true)}>
               Symbols table

@@ -27,6 +27,18 @@ export class Decre extends Instruction {
 
     }
 
+    public drawAst(): { rama: string; nodo: string } {
+        // generar un id unico
+      const id = Math.floor(Math.random() * (100-0)+0);
+      // generar el nodo
+      const nodoPrincipal  = `nodoDecre${id.toString()}`;
+      const ramadrecre = `${nodoPrincipal}[label="Decre"];\n
+      nodoDecre${nodoPrincipal}[label="${this.id} --"];\n
+      ${nodoPrincipal} -> nodoDecre${nodoPrincipal};\n`;
+      
+      return { rama:ramadrecre, nodo:nodoPrincipal };
+      }
+
     
 
 }

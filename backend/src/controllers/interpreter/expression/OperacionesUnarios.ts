@@ -52,4 +52,24 @@ export class OperacionesUnarios extends Expression {
     return { value: null, type: Type.NULL };
   }
 
+  public drawAst(): {rama:string, nodo:string} {
+    // generar un id unico
+    const id = Math.floor(Math.random() * (100 - 0) + 0);
+    // generar el nodo
+    const nodoPrincipal = `nodoUnario${id.toString()}`;
+    let ramaUnario =''
+    if(this.tipoOperacion == TipoAritmetica.INCREMENTO){
+    ramaUnario = `${nodoPrincipal}[label="Incre"];\n
+    nodoUnario${nodoPrincipal}[label="${this.id}++"];\n
+    ${nodoPrincipal} -> nodoUnario${nodoPrincipal};\n`;
+    }
+    if(this.tipoOperacion == TipoAritmetica.DECREMENTO){
+      ramaUnario = `${nodoPrincipal}[label="Decre"];\n
+      nodoUnario${nodoPrincipal}[label="${this.id}--"];\n
+      ${nodoPrincipal} -> nodoUnario${nodoPrincipal};\n`;
+      }
+   
+    return { rama: ramaUnario, nodo: nodoPrincipal };
+  }
+
 }

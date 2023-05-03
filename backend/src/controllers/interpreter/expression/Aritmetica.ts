@@ -7,11 +7,14 @@ import {
   TablaMulti,
   TablaDivision,
   TablaPotencia,
-  TablaModulo
+  TablaModulo,
 } from "../utils/TablaDominante";
 import { TipoAritmetica } from "../utils/TipoAritmetica";
 
 export class Aritmetica extends Expression {
+  public dato1: any;
+  public dato2: any;
+
   constructor(
     private izquierdo: Expression,
     private derecho: Expression,
@@ -23,6 +26,9 @@ export class Aritmetica extends Expression {
   }
 
   public execute(env: Environment): Return {
+    // PARA AST
+    this.dato1 = this.izquierdo.execute(env);
+    this.dato2 = this.derecho.execute(env);
     // verificar el tipo de operacion
     if (this.tipoOperacion == TipoAritmetica.SUMA) {
       // obtener los valores de  los operandos
@@ -208,7 +214,7 @@ export class Aritmetica extends Expression {
       const op1 = this.izquierdo.execute(env);
       const op2 = this.derecho.execute(env);
       // obtener el tipo de dato de los operandos
-      const tipoDominante =   TablaModulo[op1.type][op2.type];
+      const tipoDominante = TablaModulo[op1.type][op2.type];
       // verificar el tipo de dato
       switch (tipoDominante) {
         case Type.INT:
@@ -231,5 +237,51 @@ export class Aritmetica extends Expression {
       }
     }
     return { value: null, type: Type.NULL };
+  }
+
+  public drawAst(): { rama: string; nodo: string } {
+    // generar un id unico
+    const id = Math.floor(Math.random() * (100 - 0) + 0);
+    const nodoPrincipal = `nodoArit${id.toString()}`;
+    let ramaRelacional = "";
+    switch (this.tipoOperacion) {
+      case TipoAritmetica.SUMA:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} + ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.RESTA:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} - ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.MULTIPLICACION:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} * ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.DIVISION:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} / ${this.dato2.value}"];\n
+        ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.POTENCIA:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} ^ ${this.dato2.value}"];\n
+          ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.MODULO:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+        nodoArit${nodoPrincipal}[label="${this.dato1.value} % ${this.dato2.value}"];\n
+         ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+      case TipoAritmetica.MODULO:
+        ramaRelacional = `${nodoPrincipal}[label="Aritmetica"];\n
+          nodoArit${nodoPrincipal}[label="${this.dato1.value} % ${this.dato2.value}"];\n
+           ${nodoPrincipal} -> nodoArit${nodoPrincipal};\n`;
+        break;
+    }
+
+    return { rama: ramaRelacional, nodo: nodoPrincipal };
   }
 }

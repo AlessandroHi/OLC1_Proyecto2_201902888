@@ -46,4 +46,8 @@ export class For extends Instruction {
       contador++;
     }
   }
+
+  public drawAst(): { rama: string; nodo: string; } {
+    return {rama:"", nodo: ""};
+}
 }

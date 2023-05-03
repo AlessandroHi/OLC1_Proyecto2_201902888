@@ -111,7 +111,7 @@
 /lex
 
 %{
-
+  
   //import list errores
   const { ListaErrores} = require ("./Reports/Error.ts");
   const { Error} = require ("./Reports/Error.ts");
@@ -171,7 +171,7 @@
 %% /* Definición de la gramática */
 
 INICIO
-	: INSTRUCCIONES EOF {return $1;}
+	: INSTRUCCIONES EOF {return $1;  }
 ;
 
 INSTRUCCIONES
@@ -274,7 +274,8 @@ INCREDECRE
 
 //RETORNO DE EXPRESIONES
 EXPRESION
-  : PRIMITIVO       { $$ = $1; }
+  : PARIZQ EXPRESION PARDER  { $$ = $1; }
+  | PRIMITIVO       { $$ = $1; }
   | ACCEDERVAR      { $$ = $1; }
   | ARITMETICA      { $$ = $1; }
   | RELACIONALES  { $$ = $1; }

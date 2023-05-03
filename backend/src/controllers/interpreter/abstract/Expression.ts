@@ -10,5 +10,5 @@ export abstract class Expression {
     }
 
     public abstract execute(environment: Environment): Return
-   
+    public abstract drawAst():{rama:string, nodo:string};
 }

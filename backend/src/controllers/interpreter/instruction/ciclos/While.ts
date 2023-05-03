@@ -32,5 +32,9 @@ export class While extends Instruction {
            
           }
     }
+
+    public drawAst(): { rama: string; nodo: string; } {
+      return {rama:"", nodo: ""};
+  }
     
 }

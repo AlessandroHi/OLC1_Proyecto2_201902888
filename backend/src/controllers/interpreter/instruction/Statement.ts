@@ -21,4 +21,8 @@ export class Statement extends Instruction {
             }
         }
     }
+    public drawAst(): { rama: string; nodo: string; } {
+        return {rama:"", nodo:""};
+      
+    }
 }

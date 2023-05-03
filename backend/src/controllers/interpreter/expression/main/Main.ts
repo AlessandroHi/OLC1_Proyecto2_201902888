@@ -43,4 +43,17 @@ export class Main extends Expression {
           
         }
   }
+
+  public drawAst(): { rama: string; nodo: string } {
+    // generar un id unico
+  const id = Math.floor(Math.random() * (100-0)+0);
+  // generar el nodo
+  const nodoPrincipal  = `nodoMain${id.toString()}`;
+  const ramaMain = `${nodoPrincipal}[label="Main"];\n
+  nodoMain${nodoPrincipal}[label="${this.id}"];\n
+  ${nodoPrincipal} -> nodoMain${nodoPrincipal};\n`;
+  
+  return { rama:ramaMain, nodo:nodoPrincipal };
+  }
+ 
 }

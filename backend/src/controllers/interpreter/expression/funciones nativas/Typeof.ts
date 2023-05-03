@@ -27,4 +27,15 @@ export class Typeof extends Expression {
     }
     return { value: dato.type, type: Type.NULL };
   }
+  public drawAst(): { rama: string; nodo: string } {
+    // generar un id
+  const id = Math.floor(Math.random() * (100-0)+0);
+  // generar el nombre del nodo
+  const nodoPrincipal = `nodoPrint${id.toString()}`;
+  let ramaPrint = `${nodoPrincipal}[label="TypeOf"];\n`
+  const codigoRama:{rama:string, nodo:string} = this.dato.drawAst();
+  ramaPrint += codigoRama.rama;
+  ramaPrint += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+  return {rama:ramaPrint, nodo:nodoPrincipal};
+}
 }

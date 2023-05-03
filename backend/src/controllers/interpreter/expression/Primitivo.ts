@@ -34,5 +34,17 @@ export class Primitivo extends Expression {
   }
 
 }
+
+public drawAst(): { rama: string; nodo: string } {
+  // generar un id unico
+const id = Math.floor(Math.random() * (100-0)+0);
+// generar el nodo
+const nodoPrincipal  = `nodoPrimitivo${id.toString()}`;
+const ramaPrimitivo = `${nodoPrincipal}[label="Primitivo"];\n
+nodoPrimitivo${nodoPrincipal}[label="${this.value.toString()}"];\n
+${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n`;
+
+return { rama:ramaPrimitivo, nodo:nodoPrincipal };
+}
 }
 

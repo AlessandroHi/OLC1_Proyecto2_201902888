@@ -26,6 +26,17 @@ export class Incre extends Instruction {
         env.modificar(this.id, variable?.valor)
 
     }
+    public drawAst(): { rama: string; nodo: string } {
+        // generar un id unico
+      const id = Math.floor(Math.random() * (100-0)+0);
+      // generar el nodo
+      const nodoPrincipal  = `nodoDecre${id.toString()}`;
+      const ramadrecre = `${nodoPrincipal}[label="Incre"];\n
+      nodoDecre${nodoPrincipal}[label="${this.id} ++"];\n
+      ${nodoPrincipal} -> nodoDecre${nodoPrincipal};\n`;
+      
+      return { rama:ramadrecre, nodo:nodoPrincipal };
+      }
 
     
 
