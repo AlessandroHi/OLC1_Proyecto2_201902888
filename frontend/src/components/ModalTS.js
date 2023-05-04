@@ -1,10 +1,11 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { BsFillEmojiSunglassesFill } from "react-icons/bs";
 
 function ModalTS(props) {
   let listaSimbolos = props.dataSimbolos
-  if(listaSimbolos.length == 0){
+  if(listaSimbolos.length === 0){
     return (
       <Modal
         {...props}
@@ -14,39 +15,19 @@ function ModalTS(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-           Symbols table
+          Symbols table
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Identifier</th>
-          <th>Type</th>
-          <th>Type</th>
-          <th>Around</th>
-          <th>Line</th>
-          <th>Column</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </Table>
+          <h3>Without Simbolos <BsFillEmojiSunglassesFill/></h3>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
-  }else{
+  }
+
     return (
       <Modal
         {...props}
@@ -92,6 +73,5 @@ function ModalTS(props) {
     );
   }
     
-  }
 
   export default ModalTS;
