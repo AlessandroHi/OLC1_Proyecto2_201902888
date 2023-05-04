@@ -26,6 +26,8 @@ function Home() {
     uploadDocument(cadenita);
   };
 
+  
+
   function uploadDocument(file) {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
@@ -102,7 +104,7 @@ function Home() {
               Open File
             </Dropdown.Item>
             <input type="file" id="file" hidden onChange={cargarArchivo} />
-            <Dropdown.Item eventKey="2">Save File</Dropdown.Item>
+            <Dropdown.Item eventKey="2" >Save File</Dropdown.Item>
           </DropdownButton>
         </div>
         <div className="nav-btn">
