@@ -18,6 +18,7 @@ function Home() {
   const [consola, setConsola] = useState(""); // mostrar consola
   const [dataErrores, setErrores] = useState(""); // mostrar errores
   const [dataAST, setAST] = useState(""); // RECIBIR  AST
+  const [dataSimbolos, setSimbolos] = useState(""); // RECIBIR  SIMBOLOS
   
   //------ CARGA DE ARCHIVO
   const cargarArchivo = (event) => {
@@ -51,10 +52,11 @@ function Home() {
         );
         //console.log(response.data);  VER QUE DATOS SE ENVIAN
       
-        const { consola, errores, AST } = response.data; //RECOLETA PRINT, ERRORES, AST , TABLA SIMBOLOS
+        const { consola, errores, AST, simbolos } = response.data; //RECOLETA PRINT, ERRORES, AST , TABLA SIMBOLOS
         setErrores(errores) //se guardan errores
         setConsola(consola); // se muestra los prints
         setAST(AST)  //SE GUARDAR EL GRAFO AST
+        setSimbolos(simbolos) // SE GUARDA SIMBOLOS
       }
     } catch (error) {
       console.log(error);
@@ -119,10 +121,10 @@ function Home() {
             </Dropdown.Item>
             <ModalTree show={modalShow1}   dataAST={dataAST} onHide={() => setModalShow1(false)} />
 
-            <Dropdown.Item eventKey="3" onClick={() => setModalShow2(true)}>
+            <Dropdown.Item eventKey="3"  onClick={() => setModalShow2(true)}>
               Symbols table
             </Dropdown.Item>
-            <ModalTS show={modalShow2} onHide={() => setModalShow2(false)} />
+            <ModalTS show={modalShow2} dataSimbolos={dataSimbolos} onHide={() => setModalShow2(false)} />
           </DropdownButton>
         </div>
       </Navbar>

@@ -48,6 +48,14 @@ export class For extends Instruction {
   }
 
   public drawAst(): { rama: string; nodo: string; } {
-    return {rama:"", nodo: ""};
+          // generar un id
+          const id = Math.floor(Math.random() * (100-0)+0);
+          // generar el nombre del nodo
+          const nodoPrincipal = `nodoFor${id.toString()}`;
+          let ramaFor = `${nodoPrincipal}[label="For"];\n`
+          const codigoRama:{rama:string, nodo:string} = this.code.drawAst();
+          ramaFor += codigoRama.rama;
+          ramaFor += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+          return {rama:ramaFor, nodo:nodoPrincipal};
 }
 }

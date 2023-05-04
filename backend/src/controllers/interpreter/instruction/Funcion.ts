@@ -11,11 +11,24 @@ export class Funcion extends Instruction{
 
     public execute(env: Environment) {
         // guardar la funcion en entorno
-        env.guardarFuncion(this.id,this);
-    }
+        env.guardarFuncion(this.id,this,this.tipo,this.line,this.column);
+    } 
 
     public drawAst(): { rama: string; nodo: string; } {
-        return {rama:"", nodo:""};
+    // generar un id
+    const id = Math.floor(Math.random() * (100-0)+0);
+    // generar el nombre del nodo
+    const nodoPrincipal = `nodofuncion${id.toString()}`;
+    let ramaFUN;
+    if(this.tipo == null){
+        ramaFUN = `${nodoPrincipal}[label="Metodo  ${this.id}"];\n`
+    }else{
+        ramaFUN = `${nodoPrincipal}[label="Funcion  ${this.id}"];\n`
+    }
+    const codigoRama:{rama:string, nodo:string} = this.statement.drawAst();
+    ramaFUN += codigoRama.rama;
+    ramaFUN += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+    return {rama:ramaFUN, nodo:nodoPrincipal};
       }
     
 }

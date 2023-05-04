@@ -44,6 +44,7 @@
 "typeof"            return 'RTYPEOF';
 "toString"          return 'RTOSTRING';
 "main"              return 'RMAIN';
+"new"               return 'RNEW';
 
 
 //Relacionales
@@ -150,6 +151,7 @@
   const {DoWhile} = require('./instruction/ciclos/DoWhile')
   const {While} = require('./instruction/ciclos/While');
   const {If} = require('./instruction/control/If');
+  const {Arreglo} = require('./instruction/Array/Arreglo');
   
 %}
 
@@ -191,9 +193,16 @@ INSTRUCCION
   | DOWHILE                  { $$ = $1; }
   | WHILE                    { $$ = $1; }
   | MAIN PTCOMA              { $$ = $1; }
+  | ARRAY_DECLARACION PTCOMA {  $$ = $1;}
 	| error PTCOMA      {  console.error("En la linea "+ this._$.first_column)
     Sintactico = new Error("Sintactico","No se esperaba el caracter ", this._$.first_line,+ this._$.first_column); ListaErrores.push(Sintactico);}
 ;
+// GRAMATICA ARREGLOS
+ARRAY_DECLARACION
+    : TIPO CORIZR CORDER ID IGUAL LLAVEIZQ ARGUMENTOS LLAVEDER { $$= new Arreglo($4, $7, $1, [], @1.first_line, @1.first_column ); } 
+    |  TIPO CORIZR CORDER ID IGUAL RNEW TIPO CORIZR EXPRESION CORDER { $$= new Arreglo($4, [], $1, [], @1.first_line, @1.first_column ); } 
+;
+
 
 //GRAMATICA MAIN
 MAIN

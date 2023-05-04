@@ -4,7 +4,7 @@ import { Environment } from "../../abstract/Environment";
 import { Type } from "../../abstract/Return";
 
 export class DoWhile extends Instruction {
-
+    public condi: any
     constructor(
         private condicion: Expression,
         private code: Instruction,
@@ -15,6 +15,7 @@ export class DoWhile extends Instruction {
     }
 
     public execute(env: Environment) {
+        this.condi = this.condicion.execute(env)
 
         let condition = this.condicion.execute(env)
        
@@ -26,7 +27,15 @@ export class DoWhile extends Instruction {
     }
 
     public drawAst(): { rama: string; nodo: string; } {
-        return {rama:"", nodo: ""};
+         // generar un id
+         const id = Math.floor(Math.random() * (100-0)+0);
+         // generar el nombre del nodo
+         const nodoPrincipal = `nodoDO${id.toString()}`;
+         let ramaDo = `${nodoPrincipal}[label="Do while ${this.condi.value}"];\n`
+         const codigoRama:{rama:string, nodo:string} = this.code.drawAst();
+         ramaDo += codigoRama.rama;
+         ramaDo += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+         return {rama:ramaDo, nodo:nodoPrincipal};
     }
    
 }

@@ -4,7 +4,8 @@ import { Environment } from "../../abstract/Environment";
 
 
 export class While extends Instruction {
-
+    public condi: any
+    
     constructor(
         private condicion: Expression,
         public code: Instruction,
@@ -16,7 +17,7 @@ export class While extends Instruction {
 
     public execute(env: Environment) {
         
-        let condition = this.condicion.execute(env)
+       this.condi = this.condicion.execute(env)
         
         while (true) {
             // obtener el  valor  de la condicion
@@ -34,7 +35,16 @@ export class While extends Instruction {
     }
 
     public drawAst(): { rama: string; nodo: string; } {
-      return {rama:"", nodo: ""};
+          // generar un id
+    const id = Math.floor(Math.random() * (100-0)+0);
+    // generar el nombre del nodo
+    const nodoPrincipal = `nodoWhile${id.toString()}`;
+    let ramaWhile = `${nodoPrincipal}[label="While ${this.condi.value}"];\n`
+    const codigoRama:{rama:string, nodo:string} = this.code.drawAst();
+    ramaWhile += codigoRama.rama;
+    ramaWhile += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+    return {rama:ramaWhile, nodo:nodoPrincipal};
+                
   }
     
 }

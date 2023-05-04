@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { printlist } from "./interpreter/Reports/PrintList";
 import { ListaErrores, Error } from "./interpreter/Reports/Error";
+import { ListaTabla, TablaSimbolos } from "./interpreter/Reports/TablaSimbolos";
 import { Environment } from "./interpreter/abstract/Environment";
 import { Main } from "./interpreter/expression/main/Main";
 
@@ -19,6 +20,12 @@ class InterpreteController {
     while (ListaErrores.length > 0) {
       ListaErrores.pop();
     }
+    
+    // VACIAR LISTA DE SIMBOLOS PARA NUEVO
+    while (ListaTabla.length > 0) {
+      ListaTabla.pop();
+    }
+
     // variable parser
     var parser = require("./interpreter/grammar");
 
@@ -54,7 +61,7 @@ class InterpreteController {
         drawast += "\n}";
         // ------------------
        
-        res.json({ consola: printlist.join("\n"), errores: ListaErrores, AST:drawast });
+        res.json({ consola: printlist.join("\n"), errores: ListaErrores, AST:drawast , simbolos: ListaTabla });
       } catch (error) {
         res.json({
           consola: "Errors check reports... ",
